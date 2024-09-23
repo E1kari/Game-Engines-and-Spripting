@@ -11,11 +11,11 @@ public class EnemyController : MonoBehaviour
     public int attackCooldown;
     public Material hitMaterial;
     private int hitCooldown;
-
     private Material defaultMaterial;
-
-    protected int attackTimer;
+    public int attackTimer;
     NavMeshAgent agent;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +33,11 @@ public class EnemyController : MonoBehaviour
         if (hitCooldown == 0)
         {
             gameObject.GetComponent<Renderer>().material = defaultMaterial;
+        }
+
+        if (health <= 0)
+        {
+            Destroy(gameObject, 0);
         }
     }
 
