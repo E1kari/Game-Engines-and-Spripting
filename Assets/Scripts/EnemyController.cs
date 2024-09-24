@@ -13,6 +13,13 @@ public class EnemyController : MonoBehaviour
     private int hitCooldown;
     private Material defaultMaterial;
     public int attackTimer;
+    private EnemyState state;
+
+    protected enum EnemyState
+    {
+        following,
+        attacking,
+    }
     NavMeshAgent agent;
 
     
@@ -20,16 +27,16 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         attackTimer = attackCooldown;
+        state = EnemyState.following;
         agent = GetComponent<NavMeshAgent>();
+        agent.destination = character.transform.position;
         defaultMaterial = gameObject.GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        agent.destination = character.transform.position;
-
-        hitCooldown--;
+            hitCooldown--;
         if (hitCooldown == 0)
         {
             gameObject.GetComponent<Renderer>().material = defaultMaterial;
@@ -38,26 +45,54 @@ public class EnemyController : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject, 0);
+            return;
+        }
+
+        switch(state)
+        {
+            case (EnemyState.following):
+                //print("following");
+                agent.destination = character.transform.position;
+                break;
+
+            case (EnemyState.attacking):
+                //print("attacking");
+                Vector3 lookTarget = character.transform.position;
+                lookTarget.y = transform.position.y;
+                transform.LookAt(lookTarget);
+                attackTimer--;
+                attack(character);
+                break;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        attackTimer--;
+        if (other.gameObject.tag == "Player")
+        {
+            state = EnemyState.attacking;
+
+            Vector3 difference = character.transform.position - transform.position;
+            agent.destination = transform.position + (difference/2);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            attackTimer = attackCooldown;
+            state = EnemyState.following;
+        }
+    }
+
+    private void attack(GameObject attackObject)
+    {
         if (attackTimer <= 0)
         {
-            attack(collision);
+            attackObject.GetComponent<PlayerCharacterController>().health--;
             attackTimer = attackCooldown;
         }
-    }
-
-    private void attack(Collision collision)
-    {
-        GameObject other = collision.gameObject;
-            if (other.tag == "Player")
-            {
-                other.GetComponent<PlayerCharacterController>().health--;
-            }
     }
 
     public void getHit()
@@ -65,5 +100,13 @@ public class EnemyController : MonoBehaviour
         gameObject.GetComponent<Renderer>().material = hitMaterial;
         hitCooldown = 10;
         health--;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(gameObject.transform.position, gameObject.transform.position + gameObject.transform.forward);
+        
+        SphereCollider sphere = gameObject.GetComponent<SphereCollider>();
+        Gizmos.DrawWireSphere(gameObject.transform.position + sphere.center, sphere.radius);
     }
 }

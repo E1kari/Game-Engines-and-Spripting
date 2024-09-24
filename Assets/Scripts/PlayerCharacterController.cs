@@ -60,7 +60,7 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
 
-        if (ammoCount > 0 && Input.GetButton("Fire1") && !coolDownActive && !isReloading)
+        if (ammoCount > 0 && Input.GetButtonDown("Fire1") && !coolDownActive && !isReloading)
         {
             Shoot();
             StartCoroutine(Cooldown());
@@ -113,5 +113,10 @@ public class PlayerCharacterController : MonoBehaviour
         coolDownActive = true;
         yield return new WaitForSeconds(1/FireRate);
         coolDownActive = false;
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(gameObject.transform.position, gameObject.transform.position + gameObject.transform.forward);
     }
 }
