@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject character;
+    private GameObject character;
     public int health;
     public int attackCooldown;
     public Material hitMaterial;
@@ -22,10 +22,12 @@ public class EnemyController : MonoBehaviour
     }
     NavMeshAgent agent;
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
+        character = GameObject.FindGameObjectsWithTag("Player")[0];
+
         attackTimer = attackCooldown;
         state = EnemyState.following;
         agent = GetComponent<NavMeshAgent>();
@@ -36,7 +38,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-            hitCooldown--;
+        hitCooldown--;
         if (hitCooldown == 0)
         {
             gameObject.GetComponent<Renderer>().material = defaultMaterial;
@@ -48,7 +50,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        switch(state)
+        switch (state)
         {
             case (EnemyState.following):
                 //print("following");
@@ -73,7 +75,7 @@ public class EnemyController : MonoBehaviour
             state = EnemyState.attacking;
 
             Vector3 difference = character.transform.position - transform.position;
-            agent.destination = transform.position + (difference/2);
+            agent.destination = transform.position + (difference / 2);
         }
     }
 
@@ -105,7 +107,7 @@ public class EnemyController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(gameObject.transform.position, gameObject.transform.position + gameObject.transform.forward);
-        
+
         SphereCollider sphere = gameObject.GetComponent<SphereCollider>();
         Gizmos.DrawWireSphere(gameObject.transform.position + sphere.center, sphere.radius);
     }

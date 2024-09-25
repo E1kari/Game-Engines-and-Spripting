@@ -40,9 +40,9 @@ public class PlayerCharacterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+
         GetInputs();
         if (horizontalMouse != 0)
         {
@@ -53,11 +53,6 @@ public class PlayerCharacterController : MonoBehaviour
             VerticalCameraMovement();
         }
         Movement();
-
-        if (transform.position.y != 0)
-        {
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        }
 
 
         if (ammoCount > 0 && Input.GetButtonDown("Fire1") && !coolDownActive && !isReloading)
@@ -81,14 +76,15 @@ public class PlayerCharacterController : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, horizontalMouse, 0) * MouseSensitivity);
     }
-    private void VerticalCameraMovement() {
+    private void VerticalCameraMovement()
+    {
         verticalAngle += -verticalMouse * MouseSensitivity;
         verticalAngle = Mathf.Clamp(verticalAngle, -90, 90);
         PlayerCamera.transform.localEulerAngles = new Vector3(verticalAngle, 0, 0);
     }
     private void Movement()
     {
-        moveDirection = new Vector3(sideMovement, 0, forwardMovement);
+        moveDirection = new Vector3(sideMovement, -9.81f * 3 * Time.deltaTime, forwardMovement); //@todo: out source into variables
         moveDirection = transform.TransformDirection(moveDirection);
         characterController.Move(moveDirection * MovementSpeed * Time.deltaTime);
     }
@@ -111,7 +107,7 @@ public class PlayerCharacterController : MonoBehaviour
     IEnumerator Cooldown()
     {
         coolDownActive = true;
-        yield return new WaitForSeconds(1/FireRate);
+        yield return new WaitForSeconds(1 / FireRate);
         coolDownActive = false;
     }
 
