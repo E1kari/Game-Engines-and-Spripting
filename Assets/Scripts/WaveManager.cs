@@ -19,6 +19,7 @@ public class WaveManager : MonoBehaviour
     }
 
     public Wave[] allWaves;
+
     public EnemyManager enemyManager;
     private int waveNumber;
 

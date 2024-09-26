@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionDetection : MonoBehaviour
+public class BulletController : MonoBehaviour
 {
     GameObject player;
+
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -17,6 +18,7 @@ public class CollisionDetection : MonoBehaviour
         if (other.tag == "Enemy")
         {
             other.GetComponent<EnemyController>().getHit();
+            Destroy(gameObject, 0);
         }
     }
 }
