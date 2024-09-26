@@ -20,7 +20,6 @@ public class WaveManager : MonoBehaviour
 
     public Wave[] allWaves;
 
-    public SpawnPoint[] SpawnPoints;
     public EnemyManager enemyManager;
     private int waveNumber;
 
