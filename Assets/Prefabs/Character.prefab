@@ -54,7 +54,7 @@ MonoBehaviour:
   playerCamera_: {fileID: 9035466247121337203}
   mouseSensitivity_: 5
   gravityMultiplyer_: 50
-  movementSpeed_: 4
+  movementSpeed_: 5
   bullet_: {fileID: 2317131463575193869, guid: 8d8726eaf66957c43ac5212de6883493, type: 3}
   bulletSpeed_: 300
   startingAmmoCount_: 10
