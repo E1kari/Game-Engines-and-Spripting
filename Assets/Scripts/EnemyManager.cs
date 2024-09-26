@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -18,7 +20,14 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        foreach (GameObject enemy in enemies_)
+        {
+            if (enemy.GetComponent<EnemyController>().health <= 0)
+            {
+                enemies_.Remove(enemy);
+                enemy.GetComponent<EnemyController>().die();
+            }
+        }
     }
 
     public void SpawnWave(WaveManager.Wave wave)
@@ -33,5 +42,15 @@ public class EnemyManager : MonoBehaviour
                 enemies_.Add(Instantiate(enemy, spawnPoints_[rnd].hit.point, transform.rotation));
             }
         }
+    }
+
+    public bool allEnemiesDead()
+    {
+        print(enemies_.Count);
+        if (enemies_.Count == 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
