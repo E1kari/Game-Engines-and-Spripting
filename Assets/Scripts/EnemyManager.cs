@@ -20,12 +20,12 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (GameObject enemy in enemies_)
+        for (int i = 0; i < enemies_.Count; i++)
         {
-            if (enemy.GetComponent<EnemyController>().health <= 0)
+            if (enemies_[i].GetComponent<EnemyController>().health <= 0)
             {
-                enemies_.Remove(enemy);
-                enemy.GetComponent<EnemyController>().die();
+                enemies_[i].GetComponent<EnemyController>().die();
+                enemies_.RemoveAt(i);
             }
         }
     }
@@ -38,7 +38,7 @@ public class EnemyManager : MonoBehaviour
             for (int i = 0; i < waveElement.amount; i++)
             {
                 int rnd = Random.Range(0, spawnPoints_.Length);
-                print(rnd);
+                //print(rnd);
                 enemies_.Add(Instantiate(enemy, spawnPoints_[rnd].hit.point, transform.rotation));
             }
         }
@@ -46,7 +46,7 @@ public class EnemyManager : MonoBehaviour
 
     public bool allEnemiesDead()
     {
-        print(enemies_.Count);
+        //print(enemies_.Count);
         if (enemies_.Count == 0)
         {
             return true;

@@ -20,37 +20,46 @@ public class WaveManager : MonoBehaviour
         public WaveElement[] wave;
     }
 
-    public Wave[] allWaves;
+    public Wave[] allWaves_;
 
     public TextMeshProUGUI uiWaveCount_;
 
-    public EnemyManager enemyManager;
+    public int secondsToStartNewWave_;
+
+    public EnemyManager enemyManager_;
+
+    private bool waiting_;
     private int waveNumber;
 
     // Start is called before the first frame update
     void Start()
     {
         waveNumber = 0;
-        NextWave();
+        StartCoroutine(NextWave());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (enemyManager.allEnemiesDead())
+        if (!waiting_)
         {
-            NextWave();
+            if (enemyManager_.allEnemiesDead())
+            {
+                StartCoroutine(NextWave());
+            }
         }
     }
 
-    private void NextWave()
+    private IEnumerator NextWave()
     {
+        waiting_ = true;
+        yield return new WaitForSeconds(secondsToStartNewWave_);
         waveNumber++;
-        print(waveNumber);
-        if (waveNumber - 1 < allWaves.Length)
+        if (waveNumber - 1 < allWaves_.Length)
         {
-            enemyManager.SpawnWave(allWaves[waveNumber - 1]);
+            enemyManager_.SpawnWave(allWaves_[waveNumber - 1]);
         }
-        //uiWaveCount_.text = ()
+        uiWaveCount_.text = waveNumber.ToString() + "/" + allWaves_.Length.ToString();
+        waiting_ = false;
     }
 }
