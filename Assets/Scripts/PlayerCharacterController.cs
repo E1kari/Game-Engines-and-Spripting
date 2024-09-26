@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class PlayerCharacterController : MonoBehaviour
 {
     public int health_;
+    public TextMeshProUGUI uiHealthCount_;
 
     //-----camera-----//
     public GameObject playerCamera_;
@@ -118,6 +119,12 @@ public class PlayerCharacterController : MonoBehaviour
         ammoCount_ = startingAmmoCount_;
         isReloading = false;
         uiAmmoCount_.text = ammoCount_.ToString();
+    }
+
+    public void getHit()
+    {
+        health_--;
+        uiHealthCount_.text = health_.ToString();
     }
 
     public void OnDrawGizmos()

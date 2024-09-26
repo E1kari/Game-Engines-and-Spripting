@@ -92,7 +92,7 @@ public class EnemyController : MonoBehaviour
     {
         if (attackTimer <= 0)
         {
-            attackObject.GetComponent<PlayerCharacterController>().health_--; //@todo: relocate into player.getHit()
+            attackObject.GetComponent<PlayerCharacterController>().getHit();
             attackTimer = attackCooldown;
         }
     }

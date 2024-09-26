@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private List<GameObject> enemies;
+    private List<GameObject> enemies_;
+
+    public SpawnPoint[] spawnPoints_;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemies = new List<GameObject> { };
+        enemies_ = new List<GameObject> { };
     }
 
     // Update is called once per frame
@@ -26,7 +28,9 @@ public class EnemyManager : MonoBehaviour
             GameObject enemy = waveElement.enemyType;
             for (int i = 0; i < waveElement.amount; i++)
             {
-                enemies.Add(Instantiate(enemy));
+                int rnd = Random.Range(0, spawnPoints_.Length);
+                print(rnd);
+                enemies_.Add(Instantiate(enemy, spawnPoints_[rnd].hit.point, transform.rotation));
             }
         }
     }
