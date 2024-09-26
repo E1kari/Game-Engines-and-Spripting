@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
     {
         following,
         attacking,
+        dieing
     }
     NavMeshAgent agent;
 
@@ -67,8 +68,6 @@ public class EnemyController : MonoBehaviour
                 Debug.Log("Stopping");
                 break;
         }
-        if (health<=0)
-        { animator.SetBool("IsDead",true); }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -109,7 +108,9 @@ public class EnemyController : MonoBehaviour
 
     public void die()
     {
-        Destroy(gameObject, 0);
+        state = EnemyState.dieing;
+        animator.SetBool("IsDead", true);
+        Destroy(gameObject, 5);
     }
 
     private void OnDrawGizmos()
