@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacterController : MonoBehaviour
 {
@@ -72,6 +73,11 @@ public class PlayerCharacterController : MonoBehaviour
         if (ammoCount_ != startingAmmoCount_ && !isReloading && Input.GetButtonDown("Reload"))
         {
             StartCoroutine(Reload());
+        }
+
+        if (health_ <= 0)
+        {
+            SceneManager.LoadScene("Loose Screen");
         }
     }
 
