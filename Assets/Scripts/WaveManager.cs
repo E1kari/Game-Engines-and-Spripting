@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class WaveManager : MonoBehaviour
     void Start()
     {
         waveNumber = 0;
+        uiWaveCount_.text = waveNumber.ToString() + "/" + allWaves_.Length.ToString();
         StartCoroutine(NextWave());
     }
 
@@ -53,11 +55,15 @@ public class WaveManager : MonoBehaviour
     private IEnumerator NextWave()
     {
         waiting_ = true;
-        yield return new WaitForSeconds(secondsToStartNewWave_);
         waveNumber++;
         if (waveNumber - 1 < allWaves_.Length)
         {
+            yield return new WaitForSeconds(secondsToStartNewWave_);
             enemyManager_.SpawnWave(allWaves_[waveNumber - 1]);
+        }
+        else
+        {
+            SceneManager.LoadScene("Win Screen");
         }
         uiWaveCount_.text = waveNumber.ToString() + "/" + allWaves_.Length.ToString();
         waiting_ = false;
