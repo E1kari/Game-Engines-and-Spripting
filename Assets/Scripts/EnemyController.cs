@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
     public int attackTimer;
     private EnemyState state;
     private Animator animator;
+    public AudioClip[] randomSounds_;
+    private AudioSource audioSource_;
 
     protected enum EnemyState
     {
@@ -36,6 +38,10 @@ public class EnemyController : MonoBehaviour
         agent.destination = character.transform.position;
         defaultMaterial = gameObject.GetComponent<Renderer>().material;
         animator = GetComponentInChildren<Animator>();
+
+        audioSource_ = GetComponent<AudioSource>();
+        StartCoroutine(PlaySounds());
+
     }
 
     // Update is called once per frame
@@ -53,8 +59,8 @@ public class EnemyController : MonoBehaviour
             case (EnemyState.following):
                 //print("following");
                 agent.destination = character.transform.position;
-                animator.SetBool("IsMoving", true);
-                Debug.Log("Walking");
+                animator.SetBool("IsWalking", true);
+                //Debug.Log("Walking");
                 break;
 
             case (EnemyState.attacking):
@@ -64,8 +70,8 @@ public class EnemyController : MonoBehaviour
                 transform.LookAt(lookTarget);
                 attackTimer--;
                 attack(character);
-                animator.SetBool("IsMoving", false);
-                Debug.Log("Stopping");
+                animator.SetBool("IsWalking", false);
+                //Debug.Log("Stopping");
                 break;
         }
     }
@@ -119,5 +125,15 @@ public class EnemyController : MonoBehaviour
 
         SphereCollider sphere = gameObject.GetComponent<SphereCollider>();
         Gizmos.DrawWireSphere(gameObject.transform.position + sphere.center, sphere.radius);
+    }
+
+    IEnumerator PlaySounds()
+    {
+        while (true)
+        {
+            audioSource_.clip = randomSounds_[Random.Range(0, randomSounds_.Length)];
+            audioSource_.Play();
+            yield return new WaitForSeconds(audioSource_.clip.length + 5);
+        }
     }
 }
