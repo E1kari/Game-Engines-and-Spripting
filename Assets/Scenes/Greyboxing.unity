@@ -8986,6 +8986,7 @@ MonoBehaviour:
   uiHealthCount_: {fileID: 0}
   playerCamera_: {fileID: 0}
   mouseSensitivity_: 5
+  gravityMultiplyer_: 50
   movementSpeed_: 5
   bullet_: {fileID: 0}
   bulletSpeed_: 300
