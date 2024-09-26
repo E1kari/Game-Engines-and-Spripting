@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class EnemyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        enemies = new List<GameObject> { };
     }
 
     // Update is called once per frame

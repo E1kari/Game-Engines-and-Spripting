@@ -7,108 +7,117 @@ using UnityEngine.EventSystems;
 
 public class PlayerCharacterController : MonoBehaviour
 {
-    public int health;
-    public TextMeshProUGUI UIAmmoCount;
+    public int health_;
 
-    float sideMovement;
-    float forwardMovement;
-    float horizontalMouse;
-    float verticalMouse;
-    float verticalAngle = 0f;
-    public float MovementSpeed = 5.0f;
-    public float MouseSensitivity = 5f;
-    public GameObject PlayerCamera;
-    CharacterController characterController;
-    private Vector3 moveDirection = Vector3.zero;
+    //-----camera-----//
+    public GameObject playerCamera_;
+    public float mouseSensitivity_ = 5f;
+    private float verticalAngle = 0f;
 
-    public GameObject Bullet;
-    public float BulletSpeed;
-    public float FireRate = 5f;
-    bool isReloading = false;
-    public int StartingAmmoCount;
-    int ammoCount;
-    public float ReloadingTime = 2f;
-    bool coolDownActive = false;
+    //-----movement-----//
+    //MovementState movementState_;
+    CharacterController characterController_;
+    public float movementSpeed_ = 5.0f;
+
+    //-----shooting-----//
+    //SecondaryState secondaryState_;
+    public GameObject bullet_;
+    public float bulletSpeed_ = 300;
+    public int startingAmmoCount_;
+    private int ammoCount_;
+    public TextMeshProUGUI uiAmmoCount_;
+    public float reloadingTime_ = 2f;
+    private bool isReloading = false;
+
+    public enum MovementState
+    {
+        standing,
+        walking
+    }
+
+    public enum SecondaryState
+    {
+        none,
+        reloading,
+        shooting,
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        ammoCount = StartingAmmoCount;
-        UIAmmoCount.text = ammoCount.ToString();
-        characterController = GetComponent<CharacterController>();
+
+        ammoCount_ = startingAmmoCount_;
+        uiAmmoCount_.text = ammoCount_.ToString();
+        characterController_ = GetComponent<CharacterController>();
+
+        //movementState_ = MovementState.standing;
+        //secondaryState_ = SecondaryState.none;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-
-        GetInputs();
-        if (horizontalMouse != 0)
-        {
-            HorizontalCameraMovement();
-        }
-        if (verticalMouse != 0)
-        {
-            VerticalCameraMovement();
-        }
         Movement();
+        CameraMovement();
 
-
-        if (ammoCount > 0 && Input.GetButtonDown("Fire1") && !coolDownActive && !isReloading)
+        if (ammoCount_ > 0 && Input.GetButtonDown("Fire1") && !isReloading)
         {
             Shoot();
-            StartCoroutine(Cooldown());
         }
-        if (ammoCount != StartingAmmoCount && !isReloading && Input.GetButtonDown("Reload"))
+        if (ammoCount_ != startingAmmoCount_ && !isReloading && Input.GetButtonDown("Reload"))
         {
             StartCoroutine(Reload());
         }
     }
-    private void GetInputs()
+
+    private void CameraMovement()
     {
-        sideMovement = Input.GetAxis("Horizontal");
-        forwardMovement = Input.GetAxis("Vertical");
-        horizontalMouse = Input.GetAxisRaw("Mouse X");
-        verticalMouse = Input.GetAxisRaw("Mouse Y");
+        float horizontalMouseInput = Input.GetAxisRaw("Mouse X");
+        float verticalMouseInput = Input.GetAxisRaw("Mouse Y");
+
+        if (horizontalMouseInput != 0)
+        {
+            transform.Rotate(new Vector3(0, horizontalMouseInput, 0) * mouseSensitivity_);
+        }
+        if (verticalMouseInput != 0)
+        {
+            verticalAngle += -verticalMouseInput * mouseSensitivity_;
+            verticalAngle = Mathf.Clamp(verticalAngle, -90, 90);
+            playerCamera_.transform.localEulerAngles = new Vector3(verticalAngle, 0, 0);
+        }
     }
-    private void HorizontalCameraMovement()
-    {
-        transform.Rotate(new Vector3(0, horizontalMouse, 0) * MouseSensitivity);
-    }
-    private void VerticalCameraMovement()
-    {
-        verticalAngle += -verticalMouse * MouseSensitivity;
-        verticalAngle = Mathf.Clamp(verticalAngle, -90, 90);
-        PlayerCamera.transform.localEulerAngles = new Vector3(verticalAngle, 0, 0);
-    }
+
     private void Movement()
     {
+        float sideMovement = Input.GetAxis("Horizontal");
+        float forwardMovement = Input.GetAxis("Vertical");
+
+        Vector3 moveDirection = Vector3.zero;
+
         moveDirection = new Vector3(sideMovement, -9.81f * 3 * Time.deltaTime, forwardMovement); //@todo: out source into variables
         moveDirection = transform.TransformDirection(moveDirection);
-        characterController.Move(moveDirection * MovementSpeed * Time.deltaTime);
+        characterController_.Move(moveDirection * movementSpeed_ * Time.deltaTime);
     }
+
     private void Shoot()
     {
-        GameObject spawnedBullet = Instantiate(Bullet, PlayerCamera.transform.position, PlayerCamera.transform.rotation);
-        spawnedBullet.GetComponent<Rigidbody>().velocity = spawnedBullet.transform.forward * BulletSpeed;
-        ammoCount--;
-        UIAmmoCount.text = ammoCount.ToString();
+        GameObject spawnedBullet = Instantiate(bullet_, playerCamera_.transform.position, playerCamera_.transform.rotation);
+        spawnedBullet.GetComponent<Rigidbody>().velocity = spawnedBullet.transform.forward * bulletSpeed_;
+        ammoCount_--;
+        uiAmmoCount_.text = ammoCount_.ToString();
     }
+
     IEnumerator Reload()
     {
         isReloading = true;
-        UIAmmoCount.text = "Reloading...";
-        yield return new WaitForSeconds(ReloadingTime);
-        ammoCount = StartingAmmoCount;
+        uiAmmoCount_.text = "Reloading...";
+        yield return new WaitForSeconds(reloadingTime_);
+        ammoCount_ = startingAmmoCount_;
         isReloading = false;
-        UIAmmoCount.text = ammoCount.ToString();
-    }
-    IEnumerator Cooldown()
-    {
-        coolDownActive = true;
-        yield return new WaitForSeconds(1 / FireRate);
-        coolDownActive = false;
+        uiAmmoCount_.text = ammoCount_.ToString();
     }
 
     public void OnDrawGizmos()
