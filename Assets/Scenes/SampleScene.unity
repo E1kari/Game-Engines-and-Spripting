@@ -655,21 +655,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847067ebe8721954dab60894542fc683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allWaves:
+  allWaves_:
   - wave:
-    - enemyType: {fileID: 7432274102860148233, guid: b273bfd8b6adf3f43972e0e38549b2d7,
+    - enemyType: {fileID: 313480925477191350, guid: e840b83b9593f0444be5489c7f150642,
         type: 3}
       amount: 1
   - wave:
-    - enemyType: {fileID: 7432274102860148233, guid: b273bfd8b6adf3f43972e0e38549b2d7,
+    - enemyType: {fileID: 1267946385450657660, guid: 961ec4b183661824c941fcb8b8b7f0e5,
         type: 3}
-      amount: 3
+      amount: 1
   - wave:
-    - enemyType: {fileID: 7432274102860148233, guid: b273bfd8b6adf3f43972e0e38549b2d7,
+    - enemyType: {fileID: 313480925477191350, guid: e840b83b9593f0444be5489c7f150642,
         type: 3}
-      amount: 5
+      amount: 2
+    - enemyType: {fileID: 1267946385450657660, guid: 961ec4b183661824c941fcb8b8b7f0e5,
+        type: 3}
+      amount: 1
   uiWaveCount_: {fileID: 1883243474}
-  enemyManager: {fileID: 11102153}
+  secondsToStartNewWave_: 5
+  enemyManager_: {fileID: 11102153}
 --- !u!4 &734450950
 Transform:
   m_ObjectHideFlags: 0
@@ -679,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 734450948}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8004396, y: -2.9666498, z: 1.68758}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

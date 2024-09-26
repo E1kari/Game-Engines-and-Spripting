@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
@@ -20,37 +21,51 @@ public class WaveManager : MonoBehaviour
         public WaveElement[] wave;
     }
 
-    public Wave[] allWaves;
+    public Wave[] allWaves_;
 
     public TextMeshProUGUI uiWaveCount_;
 
-    public EnemyManager enemyManager;
+    public int secondsToStartNewWave_;
+
+    public EnemyManager enemyManager_;
+
+    private bool waiting_;
     private int waveNumber;
 
     // Start is called before the first frame update
     void Start()
     {
         waveNumber = 0;
-        NextWave();
+        uiWaveCount_.text = waveNumber.ToString() + "/" + allWaves_.Length.ToString();
+        StartCoroutine(NextWave());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (enemyManager.allEnemiesDead())
+        if (!waiting_)
         {
-            NextWave();
+            if (enemyManager_.allEnemiesDead())
+            {
+                StartCoroutine(NextWave());
+            }
         }
     }
 
-    private void NextWave()
+    private IEnumerator NextWave()
     {
+        waiting_ = true;
         waveNumber++;
-        print(waveNumber);
-        if (waveNumber - 1 < allWaves.Length)
+        if (waveNumber - 1 < allWaves_.Length)
         {
-            enemyManager.SpawnWave(allWaves[waveNumber - 1]);
+            yield return new WaitForSeconds(secondsToStartNewWave_);
+            enemyManager_.SpawnWave(allWaves_[waveNumber - 1]);
         }
-        //uiWaveCount_.text = ()
+        else
+        {
+            SceneManager.LoadScene("Win Screen");
+        }
+        uiWaveCount_.text = waveNumber.ToString() + "/" + allWaves_.Length.ToString();
+        waiting_ = false;
     }
 }
