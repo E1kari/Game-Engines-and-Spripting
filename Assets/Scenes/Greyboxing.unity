@@ -8982,16 +8982,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9c74ec2be79b246bb09dca0b5513ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  UIAmmoCount: {fileID: 1119844707}
-  MovementSpeed: 5
-  MouseSensitivity: 5
-  PlayerCamera: {fileID: 2132871369}
-  Bullet: {fileID: 2317131463575193869, guid: 8d8726eaf66957c43ac5212de6883493, type: 3}
-  BulletSpeed: 100
-  FireRate: 5
-  StartingAmmoCount: 10
-  ReloadingTime: 2
+  health_: 0
+  uiHealthCount_: {fileID: 0}
+  playerCamera_: {fileID: 0}
+  mouseSensitivity_: 5
+  movementSpeed_: 5
+  bullet_: {fileID: 0}
+  bulletSpeed_: 300
+  startingAmmoCount_: 0
+  uiAmmoCount_: {fileID: 0}
+  reloadingTime_: 2
 --- !u!4 &525320255
 Transform:
   m_ObjectHideFlags: 0
