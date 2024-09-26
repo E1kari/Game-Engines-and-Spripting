@@ -18,6 +18,7 @@ public class PlayerCharacterController : MonoBehaviour
     //-----movement-----//
     //MovementState movementState_;
     CharacterController characterController_;
+    public float gravityMultiplyer_ = 50;
     public float movementSpeed_ = 5.0f;
 
     //-----shooting-----//
@@ -98,7 +99,7 @@ public class PlayerCharacterController : MonoBehaviour
 
         Vector3 moveDirection = Vector3.zero;
 
-        moveDirection = new Vector3(sideMovement, -9.81f * 3 * Time.deltaTime, forwardMovement); //@todo: out source into variables
+        moveDirection = new Vector3(sideMovement, -9.81f * gravityMultiplyer_ * Time.deltaTime, forwardMovement); //@todo: out source into variables
         moveDirection = transform.TransformDirection(moveDirection);
         characterController_.Move(moveDirection * movementSpeed_ * Time.deltaTime);
     }

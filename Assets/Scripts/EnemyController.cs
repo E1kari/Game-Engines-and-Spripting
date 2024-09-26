@@ -38,16 +38,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
         hitCooldown--;
         if (hitCooldown == 0)
         {
             gameObject.GetComponent<Renderer>().material = defaultMaterial;
-        }
-
-        if (health <= 0)
-        {
-            Destroy(gameObject, 0);
-            return;
         }
 
         switch (state)
@@ -102,6 +97,11 @@ public class EnemyController : MonoBehaviour
         gameObject.GetComponent<Renderer>().material = hitMaterial;
         hitCooldown = 10;
         health--;
+    }
+
+    public void die()
+    {
+        Destroy(gameObject, 0);
     }
 
     private void OnDrawGizmos()
