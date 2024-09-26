@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    private GameObject character;
+    public GameObject character;
     public int health;
     public int attackCooldown;
     public Material hitMaterial;
@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     private Material defaultMaterial;
     public int attackTimer;
     private EnemyState state;
+    private Animator animator;
 
     protected enum EnemyState
     {
@@ -33,6 +34,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.destination = character.transform.position;
         defaultMaterial = gameObject.GetComponent<Renderer>().material;
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -50,6 +52,8 @@ public class EnemyController : MonoBehaviour
             case (EnemyState.following):
                 //print("following");
                 agent.destination = character.transform.position;
+                animator.SetBool("IsMoving", true);
+                Debug.Log("Walking");
                 break;
 
             case (EnemyState.attacking):
@@ -59,8 +63,12 @@ public class EnemyController : MonoBehaviour
                 transform.LookAt(lookTarget);
                 attackTimer--;
                 attack(character);
+                animator.SetBool("IsMoving", false);
+                Debug.Log("Stopping");
                 break;
         }
+        if (health<=0)
+        { animator.SetBool("IsDead",true); }
     }
 
     private void OnTriggerEnter(Collider other)
