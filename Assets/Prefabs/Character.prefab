@@ -50,9 +50,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health_: 10
+  uiHealthCount_: {fileID: 0}
   playerCamera_: {fileID: 9035466247121337203}
   mouseSensitivity_: 5
-  movementSpeed_: 5
+  gravityMultiplyer_: 50
+  movementSpeed_: 4
   bullet_: {fileID: 2317131463575193869, guid: 8d8726eaf66957c43ac5212de6883493, type: 3}
   bulletSpeed_: 300
   startingAmmoCount_: 10

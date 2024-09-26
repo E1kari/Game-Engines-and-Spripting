@@ -170,6 +170,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6553135522712032570, guid: b273bfd8b6adf3f43972e0e38549b2d7,
         type: 3}
+      propertyPath: health
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6553135522712032570, guid: b273bfd8b6adf3f43972e0e38549b2d7,
+        type: 3}
       propertyPath: randomSounds_.Array.size
       value: 4
       objectReference: {fileID: 0}
