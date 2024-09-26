@@ -56,7 +56,7 @@ MonoBehaviour:
   gravityMultiplyer_: 50
   movementSpeed_: 5
   bullet_: {fileID: 2317131463575193869, guid: 8d8726eaf66957c43ac5212de6883493, type: 3}
-  bulletSpeed_: 300
+  bulletSpeed_: 100
   startingAmmoCount_: 10
   uiAmmoCount_: {fileID: 0}
   reloadingTime_: 2
