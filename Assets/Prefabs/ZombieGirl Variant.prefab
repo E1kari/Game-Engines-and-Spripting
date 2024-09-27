@@ -175,6 +175,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6553135522712032570, guid: b273bfd8b6adf3f43972e0e38549b2d7,
         type: 3}
+      propertyPath: hitParticles_
+      value: 
+      objectReference: {fileID: 5697087257356945464, guid: ab0940393ff1bbd4abca9e1ce87c8d94,
+        type: 3}
+    - target: {fileID: 6553135522712032570, guid: b273bfd8b6adf3f43972e0e38549b2d7,
+        type: 3}
       propertyPath: randomSounds_.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -237,7 +243,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e1236b7dd5ef04a42a7b38cfc9f0950a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

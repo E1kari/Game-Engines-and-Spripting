@@ -17,6 +17,9 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     public AudioClip[] randomSounds_;
     private AudioSource audioSource_;
+    public ParticleSystem hitParticles_;
+    public AudioClip hitSound_;
+
 
     protected enum EnemyState
     {
@@ -40,6 +43,7 @@ public class EnemyController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
 
         audioSource_ = GetComponent<AudioSource>();
+        hitSound_ = audioSource_.clip;
         StartCoroutine(PlaySounds());
 
     }
@@ -73,12 +77,15 @@ public class EnemyController : MonoBehaviour
                 animator.SetBool("IsWalking", false);
                 //Debug.Log("Stopping");
                 break;
+            case (EnemyState.dieing):
+                agent.destination = transform.position;
+                break;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && state != EnemyState.dieing)
         {
             state = EnemyState.attacking;
 
@@ -89,7 +96,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && state != EnemyState.dieing)
         {
             attackTimer = attackCooldown;
             state = EnemyState.following;
@@ -107,6 +114,9 @@ public class EnemyController : MonoBehaviour
 
     public void getHit()
     {
+        audioSource_.clip = hitSound_;
+        audioSource_.Play();
+        Instantiate<ParticleSystem>(hitParticles_, transform.position, transform.rotation, transform);
         gameObject.GetComponent<Renderer>().material = hitMaterial;
         hitCooldown = 10;
         health--;
@@ -133,7 +143,7 @@ public class EnemyController : MonoBehaviour
         {
             audioSource_.clip = randomSounds_[Random.Range(0, randomSounds_.Length)];
             audioSource_.Play();
-            yield return new WaitForSeconds(audioSource_.clip.length + 5);
+            yield return new WaitForSeconds(audioSource_.clip.length + Random.Range(1, 7));
         }
     }
 }

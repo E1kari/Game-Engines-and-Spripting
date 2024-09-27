@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour
 {
     GameObject player;
 
+
     private void Start()
     {
         player = GameObject.FindWithTag("Player");

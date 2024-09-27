@@ -11,6 +11,8 @@ public class PlayerCharacterController : MonoBehaviour
     public int health_;
     public TextMeshProUGUI uiHealthCount_;
 
+    private AudioSource audioSource_;
+
     //-----camera-----//
     public GameObject playerCamera_;
     public float mouseSensitivity_ = 5f;
@@ -56,6 +58,8 @@ public class PlayerCharacterController : MonoBehaviour
         uiAmmoCount_.text = ammoCount_.ToString();
         characterController_ = GetComponent<CharacterController>();
 
+        audioSource_ = GetComponent<AudioSource>();
+
         //movementState_ = MovementState.standing;
         //secondaryState_ = SecondaryState.none;
     }
@@ -63,6 +67,12 @@ public class PlayerCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("escape"))
+        {
+            //print("quit");
+            Application.Quit();
+        }
+
         Movement();
         CameraMovement();
 
@@ -105,13 +115,14 @@ public class PlayerCharacterController : MonoBehaviour
 
         Vector3 moveDirection = Vector3.zero;
 
-        moveDirection = new Vector3(sideMovement, -9.81f * gravityMultiplyer_ * Time.deltaTime, forwardMovement); //@todo: out source into variables
+        moveDirection = new Vector3(sideMovement, -9.81f * gravityMultiplyer_ * Time.deltaTime, forwardMovement);
         moveDirection = transform.TransformDirection(moveDirection);
         characterController_.Move(moveDirection * movementSpeed_ * Time.deltaTime);
     }
 
     private void Shoot()
     {
+        audioSource_.Play();
         GameObject spawnedBullet = Instantiate(bullet_, playerCamera_.transform.position, playerCamera_.transform.rotation);
         spawnedBullet.GetComponent<Rigidbody>().velocity = spawnedBullet.transform.forward * bulletSpeed_;
         ammoCount_--;
